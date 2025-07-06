@@ -1,12 +1,11 @@
-import os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
+import os
 
-# Ambil token & webhook URL dari environment
-TOKEN = os.environ.get("BOT_TOKEN") or "ISI_TOKEN_DISINI"
-WEBHOOK_URL = os.environ.get("WEBHOOK_URL") or "https://dino-miner-bot.onrender.com"
+# Ganti ini dengan URL Render kamu
+WEBHOOK_URL = "https://dino-miner-bot.onrender.com"
 
-# Fungsi /start — tampilan awal game
+# --- Fungsi start ---
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     name = user.first_name or user.username or "Penambang"
@@ -36,7 +35,7 @@ Pilih aksi di bawah ⬇️"""
 
     await update.message.reply_markdown(text, reply_markup=reply_markup)
 
-# Fungsi handler tombol (callback)
+# --- Fungsi tombol interaktif ---
 async def handle_buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     data = query.data
@@ -45,19 +44,21 @@ async def handle_buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if data == "mine":
         await query.edit_message_text("⛏️ Kamu mulai menambang... Tunggu hasilnya!")
     elif data == "profile":
-        await query.edit_message_text("📊 Ini profil kamu...\nLevel 1\n🪙 DinoCoin: 0\n⛏️ Alat: Pickaxe Lv.1\n🦕 Karakter: Dino Basic")
+        await query.edit_message_text("📊 Ini profil kamu...")
     elif data == "shop":
-        await query.edit_message_text("🏪 Selamat datang di Toko Dino!\nBelum ada item tersedia.")
+        await query.edit_message_text("🏪 Selamat datang di Toko Dino!")
     elif data == "airdrop":
         await query.edit_message_text("🎁 Kamu klaim 20 DinoCoin dari airdrop!")
 
-# Jalankan bot dengan webhook
+# --- Jalankan bot dengan webhook ---
 if __name__ == "__main__":
+    TOKEN = os.environ.get("BOT_TOKEN") or "ISI_TOKEN_DISINI"
+
     app = ApplicationBuilder().token(TOKEN).build()
+
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(handle_buttons))
 
-    # Webhook endpoint
     app.run_webhook(
         listen="0.0.0.0",
         port=int(os.environ.get("PORT", 10000)),
