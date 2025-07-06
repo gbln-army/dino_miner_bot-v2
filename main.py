@@ -3,7 +3,7 @@ from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandle
 import os
 
 TOKEN = os.environ.get("BOT_TOKEN") or "7527566683:AAE-LX8qpYKMk8Z-FGOEjytzKngpthVJdXc"
-WEBHOOK_URL = "https://dino-miner-bot-v2.onrender.com"  # Ganti sesuai URL deploy
+WEBHOOK_URL = "https://dino-miner-bot-v2.onrender.com"  # Ganti sesuai URL bot lo
 
 # --- Command /start ---
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
