@@ -2,10 +2,10 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 import os
 
-# Ambil token dari environment variable atau langsung masukkan
 TOKEN = os.environ.get("BOT_TOKEN") or "7527566683:AAE-LX8qpYKMk8Z-FGOEjytzKngpthVJdXc"
-WEBHOOK_URL = "https://dino-miner-bot-v2.onrender.com"  # <- SESUAIKAN!
+WEBHOOK_URL = "https://dino-miner-bot-v2.onrender.com"  # Ganti sesuai URL deploy
 
+# --- Command /start ---
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     name = user.first_name or user.username or "Penambang"
@@ -35,6 +35,7 @@ Pilih aksi di bawah ⬇️"""
 
     await update.message.reply_markdown(text, reply_markup=reply_markup)
 
+# --- Tombol Callback ---
 async def handle_buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     data = query.data
@@ -49,8 +50,10 @@ async def handle_buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif data == "airdrop":
         await query.edit_message_text("🎁 Kamu klaim 20 DinoCoin dari airdrop!")
 
+# --- Jalankan Bot ---
 if __name__ == "__main__":
     app = ApplicationBuilder().token(TOKEN).build()
+
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(handle_buttons))
 
