@@ -2,10 +2,10 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 import os
 
-# Ganti ini dengan URL Render kamu
-WEBHOOK_URL = "https://dino-miner-bot.onrender.com"
+# Ganti dengan URL webhook lo dari Render
+WEBHOOK_URL = "https://dino-miner-bot-v2.onrender.com"
 
-# --- Fungsi start ---
+# Fungsi /start — tampilan awal game
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     name = user.first_name or user.username or "Penambang"
@@ -16,7 +16,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
          InlineKeyboardButton("🏪 Toko", callback_data="shop")],
         [InlineKeyboardButton("🎁 Airdrop", callback_data="airdrop")]
     ]
-
     reply_markup = InlineKeyboardMarkup(keyboard)
 
     text = f"""🌋 Selamat Datang di 🌋  
@@ -35,7 +34,7 @@ Pilih aksi di bawah ⬇️"""
 
     await update.message.reply_markdown(text, reply_markup=reply_markup)
 
-# --- Fungsi tombol interaktif ---
+# Fungsi tombol interaktif
 async def handle_buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     data = query.data
@@ -50,10 +49,9 @@ async def handle_buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif data == "airdrop":
         await query.edit_message_text("🎁 Kamu klaim 20 DinoCoin dari airdrop!")
 
-# --- Jalankan bot dengan webhook ---
+# Main
 if __name__ == "__main__":
-    TOKEN = os.environ.get("BOT_TOKEN") or "ISI_TOKEN_DISINI"
-
+    TOKEN = os.environ.get("BOT_TOKEN") or "ISI_TOKEN_LO"
     app = ApplicationBuilder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
